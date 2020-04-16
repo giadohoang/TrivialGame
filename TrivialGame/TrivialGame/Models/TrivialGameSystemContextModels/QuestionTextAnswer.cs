@@ -8,6 +8,7 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
         public int Id { get; set; }
         public int? QuestionId { get; set; }
         public string QuestionValue { get; set; }
+        public string QuestionAnswer { get; set; }
 
         public Question Question { get; set; }
     }

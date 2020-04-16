@@ -26,7 +26,6 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
         public virtual DbSet<Question> Question { get; set; }
         public virtual DbSet<QuestionMcanswer> QuestionMcanswer { get; set; }
         public virtual DbSet<QuestionTag> QuestionTag { get; set; }
-        public virtual DbSet<QuestionTextAnswer> QuestionTextAnswer { get; set; }
         public virtual DbSet<QuestionType> QuestionType { get; set; }
         public virtual DbSet<Score> Score { get; set; }
         public virtual DbSet<Tag> Tag { get; set; }
@@ -170,6 +169,12 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.QuestionAnswer)
+                    .IsRequired()
+                    .HasMaxLength(10);
+
+                entity.Property(e => e.QuestionValue).IsRequired();
+
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasMaxLength(450);
@@ -203,18 +208,6 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
                 entity.HasOne(d => d.Tag)
                     .WithMany(p => p.QuestionTag)
                     .HasForeignKey(d => d.TagId);
-            });
-
-            modelBuilder.Entity<QuestionTextAnswer>(entity =>
-            {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.QuestionValue).IsRequired();
-
-                entity.HasOne(d => d.Question)
-                    .WithMany(p => p.QuestionTextAnswer)
-                    .HasForeignKey(d => d.QuestionId)
-                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<QuestionType>(entity =>

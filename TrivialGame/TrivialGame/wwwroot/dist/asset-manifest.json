@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "dist/main.js",
+    "runtime.js": "dist/runtime.js"
+  },
+  "entrypoints": [
+    "dist/main.js",
+    "dist/runtime.js"
+  ]
+}

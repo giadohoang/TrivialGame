@@ -1,0 +1,42 @@
+{
+  "name": "TrivialGame",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "emotion": "^9.2.12",
+    "emotion-server": "^9.2.12",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-emotion": "^9.2.12",
+    "react-helmet": "^5.2.0",
+    "react-jss": "^8.6.1",
+    "react-router-dom": "^5.0.0",
+    "react-select": "^3.0.4",
+    "react-table": "^7.0.4",
+    "reactstrap": "^8.0.0",
+    "styled-components": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "7.8.3",
+    "@babel/plugin-syntax-dynamic-import": "7.8.3",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-react": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "babel-runtime": "6.26.0",
+    "browser-sync": "^2.26.7",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "rimraf": "3.0.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-manifest-plugin": "2.2.0",
+    "webpack-notifier": "^1.8.0"
+  }
+}

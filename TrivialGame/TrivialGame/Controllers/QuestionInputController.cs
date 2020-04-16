@@ -4,11 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using TrivialGame.Models.TrivialGameSystemContextModels;
+using Microsoft.AspNetCore.Identity;
+using TrivialGame.Data;
 
 namespace TrivialGame.Controllers
 {
+
     public class QuestionInputController : Controller
     {
+        private TrivialGameContext trivialGameContext;
+        private UserManager<ApplicationUser> userManager;
+        public QuestionInputController(TrivialGameContext _trivialGameContext, UserManager<ApplicationUser> _userManager)
+        {
+            trivialGameContext = _trivialGameContext;
+
+            userManager = _userManager;
+        }
         // GET: QuestionInput
         public ActionResult Index()
         {
@@ -20,7 +34,38 @@ namespace TrivialGame.Controllers
         {
             return View();
         }
+        // GET: QuestionInput/GetQuestions
+        public JsonResult GetQuestions()
+        {
+            var userId = userManager.GetUserId(User);
+            var question = trivialGameContext.Question.Where(q => q.UserId == userId).Include(q => q.QuestionMcanswer).Include(x => x.QuestionTag).Select(q =>
+                  new
+                  {
+                      qId = q.Id,
+                      qTag = q.QuestionTag.Select(t => new {tId = t.Id, tName = t.Tag.QtagName }),
+                      qText = q.QuestionValue,
+                      qAns = q.QuestionAnswer,
+                      qMC = (q.QuestionType == 1) ? null : q.QuestionMcanswer.Select(qmc => new { mcId= qmc.Id,mcOps = qmc.Options, mcCor = qmc.Correct})
+                  }).ToList();
+            return Json(question);
+        }
 
+        // GET: QuestionInput/GetQuestions
+        public JsonResult GetTags()
+        {
+            var userId = userManager.GetUserId(User);
+            //var question = trivialGameContext.Question.Where(q => q.UserId == userId).Include(q => q.QuestionMcanswer).Include(x => x.QuestionTag).Select(q =>
+            //      new
+            //      {
+            //          qId = q.Id,
+            //          qTag = q.QuestionTag.Select(t => new { tId = t.Id, tName = t.Tag.QtagName }),
+            //          qText = q.QuestionValue,
+            //          qAns = q.QuestionAnswer,
+            //          qMC = (q.QuestionType == 1) ? null : q.QuestionMcanswer.Select(qmc => new { mcId = qmc.Id, mcOps = qmc.Options, mcCor = qmc.Correct })
+            //      }).ToList();
+            var tags = trivialGameContext.Tag.ToList();
+            return Json(tags);
+        }
         // GET: QuestionInput/Create
         public ActionResult Create()
         {
