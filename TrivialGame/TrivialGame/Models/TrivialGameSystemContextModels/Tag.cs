@@ -10,8 +10,7 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
             QuestionTag = new HashSet<QuestionTag>();
         }
 
-        public int Id { get; set; }
-        public int? Qtag { get; set; }
+        public int Qtag { get; set; }
         public string QtagName { get; set; }
 
         public ICollection<QuestionTag> QuestionTag { get; set; }

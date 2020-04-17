@@ -18,6 +18,7 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
         public string QuestionValue { get; set; }
         public string QuestionAnswer { get; set; }
 
+        public Type QuestionTypeNavigation { get; set; }
         public AspNetUsers User { get; set; }
         public ICollection<Attempt> Attempt { get; set; }
         public ICollection<QuestionMcanswer> QuestionMcanswer { get; set; }

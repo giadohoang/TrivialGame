@@ -1,22 +1,21 @@
-﻿import React from 'react';
-import { render } from 'react-dom';
-import QuestionContainer from './QuestionContainer'
-
+﻿import React from "react";
+import { render } from "react-dom";
+// import "bootstrap/dist/css/bootstrap.min.css";
+import QuestionContainer from "./QuestionContainer";
 
 const APPS = {
-    QuestionContainer,
+  QuestionContainer,
 };
 
 function renderAppInElement(el) {
-    var App = APPS[el.id];
-    if (!App) return;
+  var App = APPS[el.id];
+  if (!App) return;
 
-    // get props from elements data attribute, like the post_id
-    const props = Object.assign({}, el.dataset);
+  // get props from elements data attribute, like the post_id
+  const props = Object.assign({}, el.dataset);
 
-    ReactDOM.render(<App {...props} />, el);
+  //   ReactDOM.render(<App {...props} />, el);
+  ReactDOM.render(<App {...props} />, el);
 }
 
-document
-    .querySelectorAll('.__react-root')
-    .forEach(renderAppInElement)
+document.querySelectorAll(".__react-root").forEach(renderAppInElement);

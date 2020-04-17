@@ -146,8 +146,6 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
 
             modelBuilder.Entity<Attempt>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Time).HasColumnType("datetime");
 
                 entity.Property(e => e.UserId)
@@ -167,17 +165,18 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
 
             modelBuilder.Entity<Question>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.QuestionAnswer)
-                    .IsRequired()
-                    .HasMaxLength(10);
+                entity.Property(e => e.QuestionAnswer).IsRequired();
 
                 entity.Property(e => e.QuestionValue).IsRequired();
 
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasMaxLength(450);
+
+                entity.HasOne(d => d.QuestionTypeNavigation)
+                    .WithMany(p => p.Question)
+                    .HasForeignKey(d => d.QuestionType)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Question)
@@ -188,8 +187,6 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
             {
                 entity.ToTable("QuestionMCAnswer");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Options).IsRequired();
 
                 entity.HasOne(d => d.Question)
@@ -199,8 +196,6 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
 
             modelBuilder.Entity<QuestionTag>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.QuestionTag)
                     .HasForeignKey(d => d.QuestionId);
@@ -210,18 +205,11 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
                     .HasForeignKey(d => d.TagId);
             });
 
-            modelBuilder.Entity<QuestionType>(entity =>
-            {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-            });
-
             modelBuilder.Entity<Score>(entity =>
             {
                 entity.HasIndex(e => e.UserId)
                     .HasName("UQ__Score__1788CC4DA2B76FAD")
                     .IsUnique();
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Score1).HasColumnName("Score");
 
@@ -235,22 +223,24 @@ namespace TrivialGame.Models.TrivialGameSystemContextModels
 
             modelBuilder.Entity<Tag>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasKey(e => e.Qtag);
 
                 entity.Property(e => e.Qtag).HasColumnName("QTag");
 
                 entity.Property(e => e.QtagName)
+                    .IsRequired()
                     .HasColumnName("QTagName")
                     .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Type>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.HasKey(e => e.Qtype);
 
                 entity.Property(e => e.Qtype).HasColumnName("QType");
 
                 entity.Property(e => e.QtypeName)
+                    .IsRequired()
                     .HasColumnName("QTypeName")
                     .HasMaxLength(50);
             });
