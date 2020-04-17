@@ -37,8 +37,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-page="/About">About</a></li>
-                    <li><a asp-page="/Contact">Contact</a></li>
+                    <li><a  asp-controller="QuestionInput" asp-action="Index">Add Question</a></li>
+                    @*<li><a asp-page="/Contact">Contact</a></li>*@
                 </ul>
                 <partial name="_LoginPartial" />
             </div>

@@ -67,9 +67,10 @@ namespace TrivialGame.Controllers
 
         public async Task<JsonResult> getTypes()
         {
-            var qTypes = await trivialGameContext.Type.Select(x=>new {
-            value = x.Qtype,
-            label = x.QtypeName
+            var qTypes = await trivialGameContext.Type.Select(x => new
+            {
+                value = x.Qtype,
+                label = x.QtypeName
             }).ToListAsync();
             return Json(qTypes);
         }
@@ -90,32 +91,60 @@ namespace TrivialGame.Controllers
                 return Json("Error");
             }
             var temp = "here";
-            var questionType = myObject.selectedQType;
-            var qObj = myObject.qObj;
+            int questionType = myObject.selectedQType;
+            AddQuestion qObj = myObject.qObj;
             var mcList = myObject.mcList;
             var selectedTagList = myObject.selectedTagList;
-            var here = "there";
             //dynamic myObject = JArray.Parse(value);
-           
+            Question question;
             try
             {
-                Question question;
+                
                 var userId = userManager.GetUserId(User);
                 //a String question
-                if (questionType == 1)
-                {
-                    question = new Question();
-                    question.UserId = userId;
-                    //question.QuestionValue = qObj.qText;
-                }
-                // TODO: Add insert logic here
 
-                return Json("success");
+                question = new Question();
+                question.UserId = userId;
+                question.QuestionValue = qObj.qText;
+                question.QuestionAnswer = qObj.qAns;
+                question.QuestionType = questionType;
+                await trivialGameContext.AddAsync(question);
+                await trivialGameContext.SaveChangesAsync();
+
+                //a Multiple Choice Question
+                if (questionType == 3)
+                {
+                    foreach (var mc in mcList)
+                    {
+                        QuestionMcanswer questionMcanswer = new QuestionMcanswer();
+                        questionMcanswer.QuestionId = question.Id;
+                        questionMcanswer.Options = mc.value;
+                        questionMcanswer.Correct = mc.answer == true ? 1 : 0;
+                        questionMcanswer.Question = question;
+                        await trivialGameContext.AddAsync(questionMcanswer);
+                        await trivialGameContext.SaveChangesAsync();
+                    }
+                }
+
+                //add tag relate to this question
+                if (selectedTagList != null)
+                {
+                    foreach (var mc in selectedTagList)
+                    {
+                        QuestionTag questionTag = new QuestionTag();
+                        questionTag.QuestionId = question.Id;
+                        questionTag.TagId = mc.value;
+                        await trivialGameContext.AddAsync(questionTag);
+                        await trivialGameContext.SaveChangesAsync();
+                    }
+                }
+                
+                return Json(new { question  = question });
             }
-            catch
+            catch (Exception e)
             {
-                return Json("Error");
-            }
+                return Json("Error "+ e.Message);
+            } 
         }
 
         // GET: QuestionInput/Edit/5

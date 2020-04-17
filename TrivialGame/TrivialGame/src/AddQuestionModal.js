@@ -26,7 +26,7 @@ class AddQuestionModal extends Component {
       // newMcId: -1,
       selectedQType: 0,
       selectedQTypeObj: {},
-      tfChoice: true,
+      tfChoice: "",
       mcChoice: 0,
       answer: "",
     };
@@ -34,6 +34,7 @@ class AddQuestionModal extends Component {
     this.renderTableBody = this.renderTableBody.bind(this);
     this.renderTags = this.renderTags.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.clearData = this.clearData.bind(this);
     this.onQTypeChange = this.onQTypeChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.handleTagChange = this.handleTagChange.bind(this);
@@ -159,16 +160,33 @@ class AddQuestionModal extends Component {
     console.log("Sedning data: ", value);
     $.ajax({
       url: "/QuestionInput/Create",
-      dataType: "application/json;charset=utf-8",
-      method: "POST",
+      // dataType: "application/json;charset=utf-8",
+      method: "post",
       data: { __RequestVerificationToken, value },
-      success: (e) => {
-        console.log("Create success: ", e);
+      success: (question) => {
+        alert("success saving question");
+        console.log("Success: ");
+        this.clearData();
+        this.props.closeModal();
       },
-      error: function (e) {
+      error: (e) => {
+        alert("error saving question");
         console.log("Error: ", e);
-        alert("error");
       },
+    });
+  }
+
+  clearData() {
+    this.setState({
+      qObj: {},
+      mcList: [],
+      typeList: [],
+      selectedTagList: [],
+      selectedQType: 0,
+      selectedQTypeObj: {},
+      tfChoice: true,
+      mcChoice: 0,
+      answer: "",
     });
   }
   renderTableBody() {
