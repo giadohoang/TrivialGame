@@ -83,12 +83,12 @@ namespace TrivialGame.Controllers
         // POST: QuestionInput/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> Create(string value)
+        public JsonResult Create(string value)
         {
             AddQuestionModel myObject = JsonConvert.DeserializeObject<AddQuestionModel>(value);
             if (myObject == null)
             {
-                return Json("Error");
+                return Json(new { status = "error" });
             }
             var temp = "here";
             int questionType = myObject.selectedQType;
@@ -108,8 +108,8 @@ namespace TrivialGame.Controllers
                 question.QuestionValue = qObj.qText;
                 question.QuestionAnswer = qObj.qAns;
                 question.QuestionType = questionType;
-                await trivialGameContext.AddAsync(question);
-                await trivialGameContext.SaveChangesAsync();
+                 trivialGameContext.Add(question);
+                 trivialGameContext.SaveChanges();
 
                 //a Multiple Choice Question
                 if (questionType == 3)
@@ -121,8 +121,8 @@ namespace TrivialGame.Controllers
                         questionMcanswer.Options = mc.value;
                         questionMcanswer.Correct = mc.answer == true ? 1 : 0;
                         questionMcanswer.Question = question;
-                        await trivialGameContext.AddAsync(questionMcanswer);
-                        await trivialGameContext.SaveChangesAsync();
+                         trivialGameContext.Add(questionMcanswer);
+                         trivialGameContext.SaveChanges();
                     }
                 }
 
@@ -134,16 +134,16 @@ namespace TrivialGame.Controllers
                         QuestionTag questionTag = new QuestionTag();
                         questionTag.QuestionId = question.Id;
                         questionTag.TagId = mc.value;
-                        await trivialGameContext.AddAsync(questionTag);
-                        await trivialGameContext.SaveChangesAsync();
+                         trivialGameContext.Add(questionTag);
+                         trivialGameContext.SaveChanges();
                     }
                 }
                 
-                return Json(new { question  = question });
+                return Json(new { status  = "success" });
             }
             catch (Exception e)
             {
-                return Json("Error "+ e.Message);
+                return Json(new {status ="error" });
             } 
         }
 

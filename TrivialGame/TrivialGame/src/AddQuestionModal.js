@@ -23,7 +23,7 @@ class AddQuestionModal extends Component {
       mcList: [],
       typeList: [],
       selectedTagList: [],
-      // newMcId: -1,
+      qText: "",
       selectedQType: 0,
       selectedQTypeObj: {},
       tfChoice: "",
@@ -161,32 +161,38 @@ class AddQuestionModal extends Component {
     $.ajax({
       url: "/QuestionInput/Create",
       // dataType: "application/json;charset=utf-8",
-      method: "post",
+      dataType: "json",
+      method: "POST",
       data: { __RequestVerificationToken, value },
-      success: (question) => {
+      success: () => {
         alert("success saving question");
         console.log("Success: ");
         this.clearData();
         this.props.closeModal();
+        return true;
       },
       error: (e) => {
         alert("error saving question");
         console.log("Error: ", e);
+        return false;
       },
     });
   }
 
   clearData() {
-    this.setState({
-      qObj: {},
-      mcList: [],
-      typeList: [],
-      selectedTagList: [],
-      selectedQType: 0,
-      selectedQTypeObj: {},
-      tfChoice: true,
-      mcChoice: 0,
-      answer: "",
+    console.log("Clearing Data");
+    this.setState((prevState, props) => {
+      return {
+        qObj: {},
+        mcList: [],
+        typeList: [],
+        selectedTagList: [],
+        selectedQType: 0,
+        selectedQTypeObj: {},
+        tfChoice: true,
+        mcChoice: 0,
+        answer: "",
+      };
     });
   }
   renderTableBody() {
@@ -286,7 +292,7 @@ class AddQuestionModal extends Component {
           {this.state.selectedQType == 1 && (
             <div className="form-group">
               <label
-                htmlFor="qText"
+                htmlFor="qAns"
                 className="label"
                 style={{ verticalAlign: "top" }}
               >
@@ -351,7 +357,9 @@ class AddQuestionModal extends Component {
             </div>
           )}
           {this.renderTags()}
-          <button onClick={this.props.closeModal}>close</button>
+          <button onClick={(this.clearData, this.props.closeModal)}>
+            close
+          </button>
           <button onClick={this.handleSubmit}>Add</button>
         </div>
       </Modal>

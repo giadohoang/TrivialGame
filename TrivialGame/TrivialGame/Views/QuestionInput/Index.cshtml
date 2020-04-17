@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div id="QuestionContainer" data-post_id="10" class="__react-root"></div>
+<div>
+    <input name="__RequestVerificationToken" type="hidden" value=@Html.AntiForgeryToken() />
+</div>
 
-<input name="__RequestVerificationToken" type="hidden" value=@Html.AntiForgeryToken() />
 
