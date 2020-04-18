@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import ReactTable from "react-table-v6";
+// import ReactTable from "react-table-v6";
 import AddQuestionModal from "./AddQuestionModal";
 import { Modal } from "react-bootstrap";
 class QuestionContainer extends Component {
@@ -95,41 +95,81 @@ class QuestionContainer extends Component {
     });
   }
   renderQuestionTable() {
-    const columns = [
-      {
-        Header: "Question",
-        accessor: "qText",
-        filterMethod: (filter, row) => {
-          return row[filter.id].includes(filter.value);
-        },
-      },
-      {
-        Header: "Answer",
-        accessor: "qAns",
-        filterMethod: (filter, row) => {
-          return row[filter.id].includes(filter.value);
-        },
-      },
-      {
-        Header: "Question Type",
-        accessor: "qType",
-        filterMethod: (filter, row) => {
-          return row[filter.id].includes(filter.value);
-        },
-      },
-    ];
+    // const columns = [
+    //   {
+    //     Header: "Question",
+    //     accessor: "qText",
+    //     filterMethod: (filter, row) => {
+    //       return row[filter.id].includes(filter.value);
+    //     },
+    //   },
+    //   {
+    //     Header: "Answer",
+    //     accessor: "qAns",
+    //     filterMethod: (filter, row) => {
+    //       return row[filter.id].includes(filter.value);
+    //     },
+    //   },
+    //   {
+    //     Header: "Question Type",
+    //     accessor: "qType",
+    //     filterMethod: (filter, row) => {
+    //       return row[filter.id].includes(filter.value);
+    //     },
+    //   },
+    // ];
+    // return (
+    //   <div>
+    //     <ReactTable
+    //       data={this.state.questions}
+    //       columns={columns}
+    //       pageSize={10}
+    //       filterable
+    //       defaultFilterMethod={(filter, row) =>
+    //         String(row[filter.id]) === filter.value
+    //       }
+    //     ></ReactTable>
+    //   </div>
+    var count = 0;
+    var tabl = [];
+    // tabl.push();
+    count = count + 1;
+    this.state.questions.forEach((item) => {
+      var tags = "";
+      item.qTag.forEach((tag) => {
+        tags = tags + "#" + tag.tName + " ";
+      });
+
+      tabl.push(
+        <tr key={"row" + count} className="table tr">
+          <td>{item.qText}</td>
+          <td>{item.qAns}</td>
+          <td>{item.qType}</td>
+          <td>{tags}</td>
+        </tr>
+      );
+      count = count + 1;
+    });
+
     return (
-      <div>
-        <ReactTable
-          data={this.state.questions}
-          columns={columns}
-          pageSize={10}
-          filterable
-          defaultFilterMethod={(filter, row) =>
-            String(row[filter.id]) === filter.value
-          }
-        ></ReactTable>
-      </div>
+      <table
+        className="table-responsive"
+        style={{
+          border: "1px solid #ddd",
+          maxHeight: "300 px",
+          overflow: "scroll",
+        }}
+      >
+        <thead>
+          <tr key={"row" + count} className="table th">
+            <th className="col-sm-6">Question</th>
+            <th className="col-sm-2">Answer</th>
+            <th className="col-sm-1">Question Type</th>
+            <th className="col-sm-3">{"Tag(s)"}</th>
+          </tr>
+        </thead>
+        <tbody>{tabl}</tbody>
+      </table>
     );
   }
 

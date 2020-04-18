@@ -44,7 +44,7 @@ namespace TrivialGame.Controllers
                   new
                   {
                       qId = q.Id,
-                      qTag = q.QuestionTag.Select(t => new { tId = t.Id, tName = t.Tag.QtagName }),
+                      qTag = q.QuestionTag.Select(t => new { tId = t.Id, tName = t.Tag.QtagName }).ToList(),
                       qText = q.QuestionValue,
                       qAns = q.QuestionAnswer,
                       qType = q.QuestionTypeNavigation.QtypeName,
