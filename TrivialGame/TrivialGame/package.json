@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "node ~/dist/bundle.js",
     "dev": "webpack --mode development --watch",
     "build": "webpack"
   },
@@ -45,5 +46,8 @@
     "webpack-cli": "^3.3.11",
     "webpack-manifest-plugin": "2.2.0",
     "webpack-notifier": "^1.8.0"
+  },
+  "engines": {
+    "node": "10.0"
   }
 }
